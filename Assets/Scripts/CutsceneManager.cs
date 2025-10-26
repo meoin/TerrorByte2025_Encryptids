@@ -9,12 +9,12 @@ public class CutsceneManager : MonoBehaviour
     public MinigameManager minigameManager;
     public CanvasGroup canvasGroup;
     public TextMeshProUGUI dialogueTextElement;
-    public GameObject dialogueBox;
+    public Image dialogueBox;
     public Image leftSprite;
     public Image rightSprite;
     private Color32 fadeColor = new Color32(52, 52, 52, 255);
     private Color32 highlightColor = new Color32(255, 255, 255, 255);
-    public float fadeSpeed = 0.002f;
+    public float fadeSpeed = 0.008f;
     private float dialogueOpacity = 0f;
     private bool runningDialogue = true;
     private bool dialogueTyped = false;
@@ -30,41 +30,45 @@ public class CutsceneManager : MonoBehaviour
 
     private string[,] sceneOne =
     {
-        {"Right", "Hey you big baddie zombie im gonna kill you"},
-        {"Elias", "Nuh uhn"},
-        {"Right", "Yuh huh buddy youre a stinky little bozo and I'm gonna shoot you with my funny gun"},
-        {"Left", "Nuh uhn nuh uhn nuh uhn"}
+        {"", "THE FIRST REUNION"},
+        {"Right", "I couldn’t let you go, Elias"},
+        {"Left", "You should’ve. Love ain’t supposed to rot like this."}
     };
 
     private string[,] sceneTwo =
     {
-        {"Right", "Wow it's sonic the hedgehog"},
-        {"Elias", "Hello Mothman skin from the hit video game Fortnite"},
-        {"Right", "I am going to shoot you with my golden fortnite gun. From fortnite"},
-        {"Left", "Chilli dog"}
+        {"", "FUNERAL FOR THE LIVING"},
+        {"Right", "Back again, boy? Dirt ain’t done with you yet..."},
+        {"Left", "We'll see."}
     };
 
     private string[,] sceneThree =
     {
-        {"Right", "Hey you big baddie zombie im gonna kill you"},
-        {"Elias", "Nuh uhn"},
-        {"Right", "Yuh huh buddy youre a stinky little bozo and I'm gonna shoot you with my funny gun"},
-        {"Left", "Nuh uhn nuh uhn nuh uhn"}
+        {"", "THE HOLLOWAY DEBT"},
+        {"Right", "You died owing me blood, Elias. Don’t think death clears the tab."},
+        {"Left", "..."}
     };
 
     private string[,] sceneFour =
     {
-        {"Right", "Hey you big baddie zombie im gonna kill you"},
-        {"Elias", "Nuh uhn"},
-        {"Right", "Yuh huh buddy youre a stinky little bozo and I'm gonna shoot you with my funny gun"},
-        {"Left", "Nuh uhn nuh uhn nuh uhn"}
+        {"", "BLEED THE RED GHOST"},
+        {"Right", "Turn back."},
+        {"Left", "I won't be doin' that, thanks." },
+        {"Left", "Let’s see if blood still burns hotter than the sun on the sand."}
     };
 
     private string[,] sceneFive =
     {
-        {"Left", "holy crap its fucking sam robichaud"},
-        {"Right", "I have all the chaos emeralds, Sonic you're so cooked bro"},
-        {"Left", "nahhhhhh bro what"}
+        {"", "THUNDER AT THE END OF THE WORLD"},
+        {"Right", "..."},
+        {"Left", "There ain’t no heaven left to crawl to. Guess I’ll make my own one outta lightning."}
+    };
+
+    private string[,] sceneSix =
+    {
+        {"", "THE BOY WHO DREW TOO SLOW"},
+        {"Right", "Used to polish your gun, Mister Pale. Used to dream I’d be half as fast."},
+        {"Left", "Dream smaller next time, kid."}
     };
 
     private string[,] sceneTest =
@@ -90,6 +94,7 @@ public class CutsceneManager : MonoBehaviour
 
         if (runningDialogue)
         {
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (!dialogueTyped)
@@ -113,11 +118,6 @@ public class CutsceneManager : MonoBehaviour
                 }
             }
 
-            //Color boxColor = canvasGroup.GetComponent<Image>().color;
-            //boxColor.a = Math.Min(boxColor.a + 0.01f, 1f);
-            //dialogueBox.GetComponent<Image>().color = boxColor;
-
-
             if (dialogueOpacity < 1f) dialogueOpacity += fadeSpeed;
             canvasGroup.alpha = dialogueOpacity;
 
@@ -130,6 +130,7 @@ public class CutsceneManager : MonoBehaviour
             }
 
             FillTextBox();
+            
         }
         else 
         {
@@ -143,7 +144,6 @@ public class CutsceneManager : MonoBehaviour
                 if (!dialogueEnded) 
                 {
                     dialogueOpacity = 0f;
-                    dialogueBox.SetActive(false);
                     canvasGroup.gameObject.SetActive(false);
                     runningDialogue = false;
                     minigameManager.StartMinigame();
@@ -154,7 +154,18 @@ public class CutsceneManager : MonoBehaviour
 
     void FillTextBox() 
     {
-        string dialogueToDisplay = dialogue[dialogueIndex, 1].Substring(0, Math.Min(dialogueLineCharactersTyped, dialogue[dialogueIndex, 1].Length));
+        if (dialogueIndex == 0)
+        {
+            dialogueBox.color = Color.black;
+            dialogueTextElement.color = Color.white;
+        }
+        else 
+        {
+            dialogueBox.color = Color.white;
+            dialogueTextElement.color = Color.black;
+        }
+
+            string dialogueToDisplay = dialogue[dialogueIndex, 1].Substring(0, Math.Min(dialogueLineCharactersTyped, dialogue[dialogueIndex, 1].Length));
 
         dialogueTextElement.text = dialogueToDisplay;
 
@@ -174,8 +185,8 @@ public class CutsceneManager : MonoBehaviour
         }
         else
         {
-            rightSprite.color = highlightColor;
-            leftSprite.color = highlightColor;
+            rightSprite.color = fadeColor;
+            leftSprite.color = fadeColor;
             leftSprite.gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             rightSprite.gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
@@ -195,29 +206,29 @@ public class CutsceneManager : MonoBehaviour
 
     void SelectScene() 
     {
-        if (sceneIndex == 1)
+        switch (sceneIndex) 
         {
-            dialogue = sceneOne;
-        }
-        else if (sceneIndex == 2)
-        {
-            dialogue = sceneTwo;
-        }
-        else if (sceneIndex == 3)
-        {
-            dialogue = sceneThree;
-        }
-        else if (sceneIndex == 4)
-        {
-            dialogue = sceneFour;
-        }
-        else if (sceneIndex == 5)
-        {
-            dialogue = sceneFive;
-        }
-        else
-        {
-            dialogue = sceneTest;
+            case 1:
+                dialogue = sceneOne;
+                break;
+            case 2:
+                dialogue = sceneTwo;
+                break;
+            case 3:
+                dialogue = sceneThree;
+                break;
+            case 4:
+                dialogue = sceneFour;
+                break;
+            case 5:
+                dialogue = sceneFive;
+                break;
+            case 6:
+                dialogue = sceneSix;
+                break;
+            default:
+                dialogue = sceneTest;
+                break;
         }
     }
 }

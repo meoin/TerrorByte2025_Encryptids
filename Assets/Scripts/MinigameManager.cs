@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,8 @@ public class MinigameManager : MonoBehaviour
     public float fadeInSpeed = 0.001f;
     public bool gameStarted = false;
     public bool canShoot = false;
+    public bool twinBattle = false;
+    private bool firstTwinShot = false;
     private bool opponentShot = false;
     private bool playerShot = false;
     private float shootTimer = 0f;
@@ -23,11 +26,15 @@ public class MinigameManager : MonoBehaviour
     public TextMeshProUGUI playerWinText;
     public TextMeshProUGUI opponentWinText;
     public GameObject crosshair;
+    public float resetTimeLimit = 1.5f;
+    private float resetTimer = 0f;
+    private bool roundReset = false;
+    private bool roundLost = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        shootTimeLimit = Random.Range(5f, 10f);
+        shootTimeLimit = Random.Range(3f, 8f);
         UpdateWinUI();
     }
 
@@ -38,7 +45,7 @@ public class MinigameManager : MonoBehaviour
         {
             shootTimer += Time.deltaTime;
 
-            if (shootTimer > shootTimeLimit && !canShoot)
+            if (shootTimer > shootTimeLimit && !canShoot && !roundReset)
             {
                 TimeLimitReached();
             }
@@ -48,31 +55,94 @@ public class MinigameManager : MonoBehaviour
                 {
                     if (crosshair.GetComponent<CrosshairMovement>().CrosshairIsOverOpponent())
                     {
-                        opponentShot = true;
-                        playerWins++;
-                        UpdateWinUI();
-                        shootPromptSFX.Play();
-                        ResetMinigame();
+                        if (!twinBattle)
+                        {
+                            roundReset = true;
+                            opponentShot = true;
+                            playerWins++;
+                            UpdateWinUI();
+                            shootPromptUI.gameObject.SetActive(false);
+                            shootPromptSFX.Play();
+                            gameStarted = false;
+                        }
+                        else
+                        {
+                            if (!firstTwinShot)
+                            {
+                                firstTwinShot = true;
+                            }
+                            else
+                            {
+                                roundReset = true;
+                                opponentShot = true;
+                                playerWins++;
+                                UpdateWinUI();
+                                shootPromptUI.gameObject.SetActive(false);
+                                shootPromptSFX.Play();
+                                gameStarted = false;
+                            }
+                        }
                     }
                 }
             }
 
             float realOpponentTimer = opponentShootTime * Mathf.Min(1 + (opponentWins * 0.15f), 1.5f);
 
-            if (shootTimer > shootTimeLimit + realOpponentTimer && !opponentShot)
+            if (shootTimer > shootTimeLimit + realOpponentTimer && !opponentShot && !playerShot)
             {
+                roundReset = true;
                 canShoot = false;
                 playerShot = true;
                 opponentWins++;
                 UpdateWinUI();
+                shootPromptUI.gameObject.SetActive(false);
                 shootPromptSFX.Play();
-                ResetMinigame();
+                gameStarted = false;
             }
         }
-        else if (gameBeginning) 
+        else if (gameBeginning)
         {
             MinigameFadeIn();
         }
+
+        if (roundReset)
+        {
+            //Debug.Log("Resetting round");
+            resetTimer += Time.deltaTime;
+
+            if (resetTimer >= resetTimeLimit)
+            {
+                resetTimer = 0f;
+                ResetMinigame();
+            }
+        }
+        Debug.Log($"Round timer: {shootTimer} / {shootTimeLimit}");
+    }
+
+    public int GetPlayerWins() 
+    {
+        return playerWins;
+    }
+
+    void RoundLost() 
+    {
+        roundReset = false;
+        canShoot = false;
+        playerShot = true;
+        opponentWins++;
+        UpdateWinUI();
+        shootPromptSFX.Play();
+        ResetMinigame();
+    }
+
+    void RoundWon() 
+    {
+        roundReset = false;
+        opponentShot = true;
+        playerWins++;
+        UpdateWinUI();
+        shootPromptSFX.Play();
+        ResetMinigame();
     }
 
     public void StartMinigame() 
@@ -117,16 +187,34 @@ public class MinigameManager : MonoBehaviour
         canShoot = true;
     }
 
+    void ResetOpponents() 
+    {
+        GameObject[] opponents = GameObject.FindGameObjectsWithTag("Opponent");
+
+        foreach (GameObject opponent in opponents)
+        {
+            if (opponent.TryGetComponent<SpriteLookAtCamera>(out SpriteLookAtCamera opp)) 
+            {
+                opp.StandBackUp();
+            }
+
+        }
+    }
+
     void ResetMinigame() 
     {
         if (playerWins < winsRequired && opponentWins < winsRequired)
         {
+            firstTwinShot = false;
+            ResetOpponents();
+            shootPromptUI.gameObject.SetActive(false);
             shootTimer = 0f;
-            shootTimeLimit = Random.Range(5f, 10f);
+            shootTimeLimit = Random.Range(3f, 8f);
             canShoot = false;
             opponentShot = false;
             playerShot = false;
-            shootPromptUI.gameObject.SetActive(false);
+            gameStarted = true;
+            roundReset = false;
         }
         else if (playerWins >= winsRequired)
         {

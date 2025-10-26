@@ -16,6 +16,7 @@ public class CrosshairMovement : MonoBehaviour
     private Vector3 centerPosition;
     private Vector3 floatTowardsPosition;
     public bool randomMovement = true;
+    public MinigameManager minigameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,7 +33,7 @@ public class CrosshairMovement : MonoBehaviour
 
         PlayerInput();
         if (randomMovement) FloatCursorTowardsRandomTarget();
-        CrosshairIsOverOpponent();
+        //CrosshairIsOverOpponent();
         //FigureEight(80f);
         //RandomForce(30f);
 
@@ -119,6 +120,19 @@ public class CrosshairMovement : MonoBehaviour
 
             if (hitTag == "Opponent")
             {
+                if (minigameManager.canShoot == true && hit.collider.gameObject.GetComponent<SpriteLookAtCamera>().canBeShot) 
+                {
+                    if (minigameManager.GetPlayerWins() == minigameManager.winsRequired)
+                    {
+                        hit.collider.gameObject.GetComponent<SpriteLookAtCamera>().FallOver();
+                    }
+                    else 
+                    {
+                        hit.collider.gameObject.GetComponent<SpriteLookAtCamera>().Shot();
+                    }
+                    
+                }
+                
                 return true;
             }
             else

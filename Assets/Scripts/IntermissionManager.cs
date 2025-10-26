@@ -24,7 +24,7 @@ public class IntermissionManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        barDistanceToMove = Screen.height / 3;
     }
 
     // Update is called once per frame
@@ -60,11 +60,11 @@ public class IntermissionManager : MonoBehaviour
             {
                 timeWaitedBeforeBattle += Time.deltaTime;
             }
-            else if (barDistanceTravelled < barDistanceToMove*3)
+            else if (barDistanceTravelled < (Screen.height/3) * 2)
             {
-                barDistanceTravelled += 1;
-                topBar.transform.Translate(0f, -2f, 0f);
-                bottomBar.transform.Translate(0f, 2f, 0f);
+                barDistanceTravelled += 3;
+                topBar.transform.Translate(0f, -4f, 0f);
+                bottomBar.transform.Translate(0f, 4f, 0f);
             }
             else 
             {
