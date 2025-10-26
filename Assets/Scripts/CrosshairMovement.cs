@@ -13,14 +13,17 @@ public class CrosshairMovement : MonoBehaviour
     private float timer = 0f;
     private float intervalTimer = 0f;
     public float interval = 3f;
+    private Vector3 truePosition;
     private Vector3 centerPosition;
     private Vector3 floatTowardsPosition;
     public bool randomMovement = true;
+    public bool shakey = false;
     public MinigameManager minigameManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        truePosition = transform.position;
         moveSpeed = maxMoveSpeed;
         centerPosition = transform.position;
         SetRandomTarget();
@@ -35,7 +38,7 @@ public class CrosshairMovement : MonoBehaviour
         if (randomMovement) FloatCursorTowardsRandomTarget();
         //CrosshairIsOverOpponent();
         //FigureEight(80f);
-        //RandomForce(30f);
+        if (shakey) RandomForce(2f);
 
         intervalTimer += Time.deltaTime;
         while (intervalTimer >= interval)
@@ -81,12 +84,12 @@ public class CrosshairMovement : MonoBehaviour
         float x = UnityEngine.Random.Range(-1f, 1f);
         float y = UnityEngine.Random.Range(-1, 1f);
 
-        transform.Translate(new Vector3(x * intensity, y * intensity));
+        transform.position = truePosition + new Vector3(x * intensity, y * intensity);
 
-        if (Vector3.Distance(centerPosition, transform.position) > maxDistance) 
-        {
-            transform.position = Vector3.MoveTowards(transform.position, centerPosition, intensity);
-        }
+        //if (Vector3.Distance(centerPosition, transform.position) > maxDistance) 
+        //{
+        //    transform.position = Vector3.MoveTowards(transform.position, centerPosition, intensity);
+        //}
     }
 
     void FigureEight(float intensity) 
@@ -122,7 +125,7 @@ public class CrosshairMovement : MonoBehaviour
             {
                 if (minigameManager.canShoot == true && hit.collider.gameObject.GetComponent<SpriteLookAtCamera>().canBeShot) 
                 {
-                    if (minigameManager.GetPlayerWins() == minigameManager.winsRequired)
+                    if (minigameManager.GetPlayerWins() == minigameManager.winsRequired - 1)
                     {
                         hit.collider.gameObject.GetComponent<SpriteLookAtCamera>().FallOver();
                     }
@@ -160,5 +163,6 @@ public class CrosshairMovement : MonoBehaviour
         moveDirection = moveDirection.normalized * moveSpeed;
 
         transform.position += moveDirection;
+        truePosition += moveDirection;
     }
 }

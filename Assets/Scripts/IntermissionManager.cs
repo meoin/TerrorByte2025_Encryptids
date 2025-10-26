@@ -8,6 +8,9 @@ public class IntermissionManager : MonoBehaviour
     public GameObject mainCamera;
     public GameObject topBar;
     public GameObject bottomBar;
+    public AudioSource travelSong;
+    public AudioSource battleStart;
+    public AudioSource facedownSound;
     public float distanceToTravel = 15f;
     public float cameraSlideDistance = 5f;
     private float cameraSlideTravelled = 0f;
@@ -21,6 +24,10 @@ public class IntermissionManager : MonoBehaviour
     private float timeWaitedBeforeBattle = 0f;
     private bool distanceReached = false;
 
+    private bool travelSongPlayed = false;
+    private bool battleStartPlayed = false;
+    private bool facedownSoundPlayed = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,6 +39,12 @@ public class IntermissionManager : MonoBehaviour
     {
         if (distanceTravelled < distanceToTravel)
         {
+            if (!travelSongPlayed) 
+            {
+                travelSong.Play();
+                travelSongPlayed = true;
+            }
+
             distanceTravelled += movementSpeed;
             transform.Translate(movementSpeed, 0f, 0f);
             BobPlayer();
@@ -47,6 +60,12 @@ public class IntermissionManager : MonoBehaviour
             }
             else if (cameraSlideTravelled < cameraSlideDistance)
             {
+                if (!facedownSoundPlayed) 
+                {
+                    facedownSound.Play();
+                    facedownSoundPlayed = true;
+                }
+
                 cameraSlideTravelled += movementSpeed / 4;
                 mainCamera.transform.Translate(movementSpeed / 4, 0f, 0f);
             }
@@ -62,9 +81,15 @@ public class IntermissionManager : MonoBehaviour
             }
             else if (barDistanceTravelled < (Screen.height/3) * 2)
             {
+                if (!battleStartPlayed) 
+                {
+                    battleStart.Play();
+                    battleStartPlayed = true;
+                }
+
                 barDistanceTravelled += 3;
-                topBar.transform.Translate(0f, -4f, 0f);
-                bottomBar.transform.Translate(0f, 4f, 0f);
+                topBar.transform.Translate(0f, -6f, 0f);
+                bottomBar.transform.Translate(0f, 6f, 0f);
             }
             else 
             {

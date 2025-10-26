@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Opening.unity
+    guid: e8b40d5bfb8a89c4f83d43feb8c340f9
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 808e22ee2387aeb4384f287fc79778e4
   - enabled: 1
@@ -18,8 +21,26 @@ EditorBuildSettings:
     path: Assets/Scenes/FightTwo.unity
     guid: 603acc0729a07d541b3d6af87022ac28
   - enabled: 1
+    path: Assets/Scenes/InterTwo.unity
+    guid: 089643e60604ad7488487b588c7ec27d
+  - enabled: 1
     path: Assets/Scenes/FightThree.unity
     guid: 7bcd91c6dec646a40b2e2b3cd90a5631
+  - enabled: 1
+    path: Assets/Scenes/InterThree.unity
+    guid: ba14ce7bd0850564e96858b268fd287b
+  - enabled: 1
+    path: Assets/Scenes/FightFour.unity
+    guid: 4fcf0d9d32ef4134f86edebe4acf5ddc
+  - enabled: 1
+    path: Assets/Scenes/InterFour.unity
+    guid: bf59772a7d70a5049863820f2e2f94cd
+  - enabled: 1
+    path: Assets/Scenes/FightFive.unity
+    guid: 759df8e82c38f9946b25d6c920166235
+  - enabled: 1
+    path: Assets/Scenes/InterFive.unity
+    guid: a7c2f05e58688f244bcf56f455ba8067
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 142fcb6cf621f174ba37f0f1360206ec

@@ -1045,7 +1045,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6d18878c29169db41866af77d171f1a7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 629fa11da342fe841a89f015e2149211, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1065,7 +1065,7 @@ Transform:
   m_GameObject: {fileID: 1187072530}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.44, y: 0.67, z: -5.51}
+  m_LocalPosition: {x: 20.336, y: 0.67, z: -5.51}
   m_LocalScale: {x: 0.4029247, y: 0.4029247, z: 0.4029247}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1220,6 +1220,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1400362641 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4973601960060624044, guid: cb72789aa3e7f7e46972796d9a70f207, type: 3}
+  m_PrefabInstance: {fileID: 6954769064181837421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1550309868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,6 +1576,10 @@ PrefabInstance:
       propertyPath: bottomBar
       value: 
       objectReference: {fileID: 1976461944}
+    - target: {fileID: 913394386444154947, guid: cb72789aa3e7f7e46972796d9a70f207, type: 3}
+      propertyPath: travelSong
+      value: 
+      objectReference: {fileID: 1400362641}
     - target: {fileID: 3623477155586990372, guid: cb72789aa3e7f7e46972796d9a70f207, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.493694
@@ -1611,6 +1620,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4973601960060624044, guid: cb72789aa3e7f7e46972796d9a70f207, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6856374201379679858, guid: cb72789aa3e7f7e46972796d9a70f207, type: 3}
       propertyPath: m_Name
       value: IntermissionManager
@@ -1628,14 +1641,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 236637456936618291, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.9875
-      objectReference: {fileID: 0}
-    - target: {fileID: 236637456936618291, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -582
-      objectReference: {fileID: 0}
     - target: {fileID: 1518725561684651256, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
       propertyPath: m_Name
       value: IntermissionCanvas
@@ -1719,14 +1724,6 @@ PrefabInstance:
     - target: {fileID: 3361363882002170821, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7405565369043002072, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.8876
-      objectReference: {fileID: 0}
-    - target: {fileID: 7405565369043002072, guid: 4876ebc1316653d4fa08b6eb4a9a867a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 551
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

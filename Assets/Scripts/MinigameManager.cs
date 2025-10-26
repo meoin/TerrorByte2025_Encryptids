@@ -29,7 +29,7 @@ public class MinigameManager : MonoBehaviour
     public float resetTimeLimit = 1.5f;
     private float resetTimer = 0f;
     private bool roundReset = false;
-    private bool roundLost = false;
+    public bool theKid = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -57,13 +57,28 @@ public class MinigameManager : MonoBehaviour
                     {
                         if (!twinBattle)
                         {
-                            roundReset = true;
-                            opponentShot = true;
-                            playerWins++;
-                            UpdateWinUI();
-                            shootPromptUI.gameObject.SetActive(false);
-                            shootPromptSFX.Play();
-                            gameStarted = false;
+                            if (!theKid)
+                            {
+                                roundReset = true;
+                                opponentShot = true;
+                                playerWins++;
+                                UpdateWinUI();
+                                shootPromptUI.gameObject.SetActive(false);
+                                shootPromptSFX.Play();
+                                gameStarted = false;
+                            }
+                            else 
+                            {
+                                resetTimeLimit = 5f;
+                                roundReset = true;
+                                canShoot = false;
+                                playerShot = true;
+                                opponentWins++;
+                                UpdateWinUI();
+                                shootPromptUI.gameObject.SetActive(false);
+                                shootPromptSFX.Play();
+                                gameStarted = false;
+                            }
                         }
                         else
                         {
@@ -149,8 +164,11 @@ public class MinigameManager : MonoBehaviour
     {
         gameBeginning = true;
         crosshair.SetActive(true);
-        playerWinText.gameObject.SetActive(true);
-        opponentWinText.gameObject.SetActive(true);
+        if (!theKid) 
+        {
+            playerWinText.gameObject.SetActive(true);
+            opponentWinText.gameObject.SetActive(true);
+        }
     }
 
     void MinigameFadeIn() 
@@ -171,7 +189,6 @@ public class MinigameManager : MonoBehaviour
             gameBeginning = false;
             gameStarted = true;
         }
-
     }
 
     void UpdateWinUI() 
